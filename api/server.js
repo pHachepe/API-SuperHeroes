@@ -16,6 +16,8 @@ const router = jsonServer.router(db);
 
 const middlewares = jsonServer.defaults();
 
+server.use(middlewares);
+
 // enable CORS
 const cors = require("cors");
 server.use(
@@ -24,12 +26,12 @@ server.use(
   })
 );
 
-server.use(middlewares);
+// enable noCors
+
 // Add this before server.use(router)
 server.use(
   jsonServer.rewriter({
     "/api/*": "/$1",
-    "/blog/:resource/:id/show": "/:resource/:id",
   })
 );
 server.use(router);
