@@ -15,8 +15,22 @@ const router = jsonServer.router(db);
 // const router = jsonServer.router('db.json')
 
 const middlewares = jsonServer.defaults();
+server.use(
+  cors({
+    origin: "*",
+  })
+);
+
+server.options("*", cors());
 
 server.use(middlewares);
+
+// Add this before server.use(router)
+server.use(
+  jsonServer.rewriter({
+    "/api/*": "/$1",
+  })
+);
 
 // enable CORS
 server.use((req, res, next) => {
@@ -25,14 +39,6 @@ server.use((req, res, next) => {
   next();
 });
 
-// enable noCors
-
-// Add this before server.use(router)
-server.use(
-  jsonServer.rewriter({
-    "/api/*": "/$1",
-  })
-);
 server.use(router);
 server.listen(3000, () => {
   console.log("JSON Server is running");
