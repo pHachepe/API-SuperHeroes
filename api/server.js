@@ -19,12 +19,11 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 
 // enable CORS
-const cors = require("cors");
-server.use(
-  cors({
-    origin: "*",
-  })
-);
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
 
 // enable noCors
 
